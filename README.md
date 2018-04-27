@@ -1,6 +1,6 @@
 # ノートアプリケーション
 
-[![Build Status](https://travis-ci.org/tokibito/note-app-django-vue-javascript.svg?branch=master)](https://travis-ci.org/tokibito/note-app-django-vue-javascript)
+[![Build Status](https://travis-ci.org/tokibito/note-app-django-vuex.svg?branch=master)](https://travis-ci.org/tokibito/note-app-django-vuex)
 
 ![ノート](note-app.png "ノート")
 
@@ -11,6 +11,8 @@
 バックエンドとなるAPIサーバーにはDjangoフレームワーク(Python)、フロントエンドにはVue.js(JavaScript)を使っています。
 
 DjangoフレームワークとJavaScriptでアプリケーションを作るサンプルコードとして作成しました。
+
+[note-app-django-vue-javascript](https://github.com/tokibito/note-app-django-vue-javascript)のVuex対応版になります。
 
 以下の要素を含んでいます:
 
@@ -32,6 +34,8 @@ DjangoフレームワークとJavaScriptでアプリケーションを作るサ�
          * loaderの仕組みによりいろいろな処理ができます(babelで変換したりとか)
    * Vue.js
       * データバインディングとコンポーネントの仕組みを提供するJavaScriptフレームワークです
+   * Vuex
+      * Vue.jsアプリケーションの状態管理の仕組みを提供するライブラリ(実質フレームワーク)です
    * Bootstrap
       * HTMLのUI部品(ナビゲーションやボタンなどいろいろ)を提供するUIフレームワークです
       * CSSと動きのある部分に必要なJavaScriptコードが提供されます
@@ -65,37 +69,15 @@ DjangoフレームワークとJavaScriptでアプリケーションを作るサ�
 
 ## 設計について
 
+[note-app-django-vue-javascript](https://github.com/tokibito/note-app-django-vue-javascript)との差分のみ記載します。
+
 アーキテクチャとモジュール構成に関して考えた点など:
 
-* シングルページアプリケーション(SPA)にはせず、DjangoのサーバーサイドレンダリングとVue.jsを組み合わせて使う
-   * ビルドしたファイルの配信は、Djangoフレームワークのstaticfilesに任せる
-* jQueryは使わない
-   * 表示制御のために、アプリケーションで大量のJavaScriptでコードを書くのを避けるため
-      * Vue.jsのデータバインディングを使えば表示制御のコードはかなり減らせます
-   * BootstrapではBootstrapVueを使います
-* Vuexはなるべく使わない
-   * 依存をなるべく減らす気持ち
-   * Vuexは学習コストもメンテコストも高いので、使わないで済むうちは使わない
-      * 複雑になったら使ったほうが楽できるとは思います
-* vue-cliを使っていない
-   * ごちゃっと余計なものが入るのを避ける
-   * 使うツールスタックを合わせられるなら使ってもよいかな
-* Vueへの依存をなるべく広げない
-   * Vueに依存しないほうがテストコードを書きやすいから
-   * Vueインスタンスをエントリポイント(index.js)外のJavaScriptコードに渡さない
-      * エントリポイントではVueに依存しないコントローラクラスのインスタンスを生成し、データはコントローラに持たせる
-   * コンポーネントから外へVueインスタンスを渡さない
-   * Bootstrapのモーダルダイアログを表示する場合は、コントローラから呼び出すのではなく、コントローラからの戻り値をコンポーネント側で使って表示制御する
-* django-webpack-loaderを使っていない
-   * なるべく依存を増やさない
-   * 必要になったら入れよう
-* DjangoのCSRF対策をフロントエンドからも利用する
-   * Cookieに書き込まれたCSRFトークンをAPI呼び出し時に利用しています
+* Vuexを使う
+   * Vueコンポーネント側の記述を減らせる
+   * しかしながら、Vuexは学習コストが高く、コードはDIの要素を含むため読みづらくなる点には注意が必要
 * Vueコンポーネントのテストはがんばらない
-   * 表示部分は変更されやすいのであんまり頑張らない
-   * Vueコンポーネントにアプリケーションロジックを書かないなら、テストもがんばらなくて済む
-   * Vueの単一ファイルコンポーネントをテストする仕組みの用意がそもそも大変
-      * 楽になったらやろう
+   * Vuexを使うことで、VueコンポーネントのUI側のコードを減らせるので、ほとんどやらなくてもよい
 
 ## Vagrant
 
