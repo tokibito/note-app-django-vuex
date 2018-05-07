@@ -9,6 +9,7 @@
   "plugins": [
     ["module-resolver", {
         "root": ["./src"]
-    }]
+    }],
+    ["transform-object-rest-spread"]
   ]
 }

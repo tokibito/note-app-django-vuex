@@ -10,5 +10,5 @@ export default new Vuex.Store({
   modules: {
     note
   },
-  strict: debug
+  strict: false
 })

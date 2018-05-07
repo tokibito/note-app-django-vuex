@@ -2,28 +2,23 @@
 <div class="app">
   <index
     class="index col-md-3"
-    :pages="controller.pages"
-    :selected-page="controller.selectedPage"
-    :class="{'fa': !controller.loaded, 'fa-spinner': !controller.loaded}"
-    @select-page="selectPage"
+    :class="{'fa': !loaded, 'fa-spinner': !loaded}"
   ></index>
   <div class="editor col-md-9">
-    <div v-if="controller.selectedPage">
-      <editor
-        :page="controller.selectedPage"
-      ></editor>
+    <div v-if="selectedPage">
+      <editor></editor>
       <button
         type="button"
         class="btn btn-primary col-md-12"
         accesskey="s"
         @click="save"
-        :disabled="!controller.selectedPage.taint"
+        :disabled="!selectedPage.taint"
       >保存 (S)</button>
       <button
         type="button"
         class="btn btn-success col-md-12"
         @click="revert"
-        :disabled="!controller.selectedPage.taint || !controller.selectedPage.id"
+        :disabled="!selectedPage.taint || !selectedPage.id"
       >変更を破棄</button>
       <button
         type="button"
@@ -35,7 +30,7 @@
       type="button"
       class="btn btn-success col-md-12"
       @click="create"
-      :disabled="!controller.loaded || controller.selectedPage && controller.selectedPage.taint"
+      :disabled="!loaded || selectedPage && selectedPage.taint"
     >新規</button>
   </div>
   <b-modal
@@ -47,6 +42,7 @@
     centered>
     {{ message }}
   </b-modal>
+
   <b-modal
     title="確認"
     ref="confirmModal"
@@ -55,6 +51,7 @@
     centered>
     削除してもよろしいですか？
   </b-modal>
+
   <b-modal
     ref="progressModal"
     hide-header
@@ -64,81 +61,86 @@
     no-close-on-esc
     centered
     @shown="shownProgress">
-    {{ message }}
+    {{ progress }}
     <b-progress :value="10" :max="10" animated></b-progress>
   </b-modal>
 </div>
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
 import Index from './Index.vue'
 import Editor from './Editor.vue'
 import '../style/Note.scss'
 import csrfToken from '../util/csrf-token'
 
 module.exports = {
-  props: ['controller'],
   components: {
     Index,
     Editor
   },
+  computed: {
+    ...mapGetters([
+      'hasMessage',
+      'isProgress',
+      'pages',
+      'loaded',
+      'selectedPage',
+      'message',
+      'progress'
+    ])
+  },
   methods: {
-    showError(message) {
-      this.message = message
-      this.$refs.errorModal.show()
-    },
-    showProgress(message) {
-      this.progressHidden = false
-      this.message = message
-      this.$refs.progressModal.show()
-    },
-    shownProgress(message) {
+    shownProgress() {
       // 表示完了前にhideProgress()が呼ばれると閉じられないのでshownイベントで再度呼ぶ
       if (this.progressHidden) {
         this.$refs.progressModal.hide()
       }
     },
-    hideProgress() {
-      this.progressHidden = true
-      this.$refs.progressModal.hide()
-    },
-    selectPage(page) {
-      let result, message
-      [result, message] = this.controller.selectPage(page)
-      if (!result) {
-        this.showError(message)
-      }
-    },
     save() {
-      let result, message, promise
-      [result, message, promise] = this.controller.save(
-        csrfToken.getCsrfTokenFromCookie(document.cookie))
-      if (!result) {
-        this.showError(message)
-      } else {
-        this.showProgress(message)
-        promise.then(this.hideProgress)
-      }
-    },
-    revert() {
-      this.controller.revert()
+      this.$store.dispatch(
+        'save',
+        csrfToken.getCsrfTokenFromCookie(document.cookie)
+      )
     },
     destroy() {
-      let result, message, promise
-      [result, message, promise] = this.controller.destroy(
-        csrfToken.getCsrfTokenFromCookie(document.cookie))
-      if (result && promise) {
-        this.showProgress(message)
-        promise.then(this.hideProgress)
-      }
+      this.$store.dispatch(
+        'destroy',
+        csrfToken.getCsrfTokenFromCookie(document.cookie)
+      )
     },
-    create() {
-      this.controller.create()
+    ...mapActions([
+      'create',
+      'revert'
+    ])
+  },
+  watch: {
+    hasMessage: {
+      handler: function(hasMessage) {
+        if (hasMessage) {
+          this.$refs.errorModal.show()
+        } else {
+          this.$refs.errorModal.hide()
+        }
+      },
+      deep: true
+    },
+    isProgress: {
+      handler: function(isProgress) {
+        if (isProgress) {
+          this.progressHidden = false
+          this.$refs.progressModal.show()
+        } else {
+          this.progressHidden = true
+          this.$refs.progressModal.hide()
+        }
+      },
+      deep: true
     }
   },
   data() {
     return {
-      message: ''
+      progressHidden: false
     }
   }
 }

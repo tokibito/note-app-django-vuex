@@ -6,7 +6,11 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 module.exports = {
-  props: ['page']
+  computed: mapGetters({
+    page: 'selectedPage'
+  })
 }
 </script>
