@@ -122,8 +122,7 @@ module.exports = {
         } else {
           this.$refs.errorModal.hide()
         }
-      },
-      deep: true
+      }
     },
     isProgress: {
       handler: function(isProgress) {
@@ -134,8 +133,7 @@ module.exports = {
           this.progressHidden = true
           this.$refs.progressModal.hide()
         }
-      },
-      deep: true
+      }
     }
   },
   data() {

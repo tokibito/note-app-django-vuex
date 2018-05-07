@@ -12,7 +12,7 @@
 
 DjangoフレームワークとJavaScriptでアプリケーションを作るサンプルコードとして作成しました。
 
-[note-app-django-vue-javascript](https://github.com/tokibito/note-app-django-vue-javascript)のVuex対応版になります。
+**[note-app-django-vue-javascript](https://github.com/tokibito/note-app-django-vue-javascript)のVuex対応版になります。**
 
 以下の要素を含んでいます:
 

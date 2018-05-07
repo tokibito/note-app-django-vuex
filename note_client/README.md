@@ -53,7 +53,7 @@ npm t
 │   │   ├── Editor.vue
 │   │   ├── Index.vue
 │   │   └── Note.vue
-│   ├── controller  # コントローラ
+│   ├── store  # Vuex Store
 │   │   └── note.js
 │   ├── index.js  # エントリポイント
 │   ├── model  # モデル
