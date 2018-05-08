@@ -1,4 +1,4 @@
-/*
+/**
  * model/page.jsのテスト
  */
 import * as assert from 'power-assert'

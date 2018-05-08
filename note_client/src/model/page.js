@@ -11,7 +11,7 @@ class Page {
     this.origin = null
   }
 
-  /*
+  /**
    * APIから受け取ったJSONからインスタンスを生成するメソッド
    */
   static fromData(data) {
@@ -27,7 +27,7 @@ class Page {
     return instance
   }
 
-  /*
+  /**
    * インスタンスを保存用にシリアライズする
    */
   toData() {

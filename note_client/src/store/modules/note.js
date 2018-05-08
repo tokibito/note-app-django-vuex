@@ -75,7 +75,7 @@ const actions = {
       commit('messageAppeared', "タイトルと内容は必須です。")
       return
     }
-    commit('progressStated', "保存しています...")
+    commit('progressStarted', "保存しています...")
     pageApi.save(state.selectedPage, csrfToken)
     .then((instance) => {
       Object.assign(state.selectedPage, instance)
@@ -91,7 +91,7 @@ const actions = {
       commit('unsavedPageDestroyed')
       return
     }
-    commit('progressStated', "削除しています...")
+    commit('progressStarted', "削除しています...")
     pageApi.destroy(state.selectedPage, csrfToken)
     .then(() => {
       commit('pageDestroyed')
@@ -127,7 +127,6 @@ const mutations = {
    * ページ一覧がロードされた
    */
   pagesLoaded(state, instances) {
-    console.log(state)
     state.pages = instances
     state.loaded = true
   },
@@ -175,6 +174,9 @@ const mutations = {
     state.selectedPage = null
   },
 
+  /**
+   * 新規ページが作成された
+   */
   newPageCreated(state) {
     let page = new Page
     page.taint = true
@@ -185,7 +187,7 @@ const mutations = {
   /**
    * 処理が開始された
    */
-  progressStated(state, progressMessage) {
+  progressStarted(state, progressMessage) {
     state.progress = progressMessage
   },
 
