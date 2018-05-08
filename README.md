@@ -14,6 +14,8 @@ DjangoフレームワークとJavaScriptでアプリケーションを作るサ�
 
 **[note-app-django-vue-javascript](https://github.com/tokibito/note-app-django-vue-javascript)のVuex対応版になります。**
 
+よろしければGitHubでStarをつけてください！
+
 以下の要素を含んでいます:
 
 * バックエンド
