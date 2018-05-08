@@ -48,18 +48,22 @@ npm t
 ├── package-lock.json  # package.jsonに書かれたモジュールとその依存モジュールすべてのバージョンが書かれているファイル
 ├── package.json  # このアプリケーションのパッケージ情報(依存パッケージの情報などが書かれている)
 ├── src  # アプリケーションのソースコード
+│   ├── api
+│   │   └── page.js
 │   ├── common.js
 │   ├── components  # Vueコンポーネント
 │   │   ├── Editor.vue
 │   │   ├── Index.vue
 │   │   └── Note.vue
-│   ├── store  # Vuex Store
-│   │   └── note.js
 │   ├── index.js  # エントリポイント
 │   ├── model  # モデル
 │   │   └── page.js
 │   ├── resource  # URL定義やメッセージカタログなどの設定ファイル以外の固定値
 │   │   └── urls.js
+│   ├── store  # Vuex Store
+│   │   ├── index.js
+│   │   └── modules
+│   │       └── note.js
 │   ├── style  # アプリケーションで使うCSS
 │   │   ├── Note.scss
 │   │   ├── font-awesome-config.scss
@@ -69,11 +73,12 @@ npm t
 │       ├── rest-api.js
 │       └── url-builder.js
 ├── test  # テストコード
-│   ├── controller
-│   │   └── note.js
 │   ├── mocha.opts  # テストランナーの設定
 │   ├── model
 │   │   └── page.js
+│   ├── store
+│   │   └── modules
+│   │       └── note.js
 │   └── util
 │       ├── csrf-token.js
 │       ├── rest-api.js

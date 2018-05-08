@@ -37,19 +37,6 @@ describe('store/modules/note:getters', () => {
   })
 })
 
-
-class CommitMock {
-  constructor() {
-    this.type = null
-    this.payload = null
-  }
-
-  commit(type, payload) {
-    this.type = type
-    this.payload = payload
-  }
-}
-
 describe('store/modules/note:actions', () => {
   it('load', () => {
     const stub = 'stub'
