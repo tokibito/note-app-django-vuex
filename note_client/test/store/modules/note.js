@@ -2,8 +2,10 @@
  * store/modules/note.jsのテスト
  */
 import * as assert from 'power-assert'
+import sinon from 'sinon'
 import note from 'store/modules/note'
 import { Page } from 'model/page'
+import pageApi from 'api/page'
 
 describe('store/modules/note:getters', () => {
   it('hasMessage', () => {
@@ -32,6 +34,69 @@ describe('store/modules/note:getters', () => {
       progress: null
     })
     assert.ok(!result)
+  })
+})
+
+
+class CommitMock {
+  constructor() {
+    this.type = null
+    this.payload = null
+  }
+
+  commit(type, payload) {
+    this.type = type
+    this.payload = payload
+  }
+}
+
+describe('store/modules/note:actions', () => {
+  it('load', () => {
+    const stub = 'stub'
+    pageApi.list = () => {
+      return new Promise((resolve, reject) => {
+        resolve(stub)
+      })
+    }
+    const commit = (type, payload) => {
+      assert.equal(type, 'pagesLoaded')
+      assert.equal(payload, stub)
+    }
+    note.actions.load(
+      {commit}
+    )
+  })
+
+  it('selectPage', () => {
+    const stub = 'stub'
+    const state = {
+      selectedPage: null
+    }
+    const commit = (type, payload) => {
+      assert.equal(type, 'pageSelected')
+      assert.equal(payload, stub)
+    }
+    note.actions.selectPage(
+      {commit, state},
+      stub
+    )
+  })
+
+  it('selectPage (taint)', () => {
+    const stub = 'stub'
+    const page = new Page
+    page.content = 'test'
+    page.taint = true
+    const state = {
+      selectedPage: page
+    }
+    const commit = (type, payload) => {
+      assert.equal(type, 'messageAppeared')
+    }
+    note.actions.selectPage(
+      {commit, state},
+      stub
+    )
   })
 })
 

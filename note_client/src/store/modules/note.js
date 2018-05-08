@@ -57,7 +57,7 @@ const actions = {
   },
 
   /**
-   * ページを選択した
+   * ページを選択する
    */
   selectPage({commit, state}, page) {
     if (state.selectedPage && state.selectedPage.taint) {
