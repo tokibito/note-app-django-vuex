@@ -78,6 +78,7 @@ DjangoフレームワークとJavaScriptでアプリケーションを作るサ�
    * テストコードは書きやすくなる
       * テストしやすいが、冗長に感じることもある
    * Vuex自体はフレームワークのようなもので、学習コストがかかる点には注意が必要
+   * アプリケーションの構造は [Shopping Cart Example](https://github.com/vuejs/vuex/tree/dev/examples/shopping-cart) を参考にしました。
 * Vueコンポーネントのテストはがんばらない
    * Vuexを使うことで、VueコンポーネントのUI側のコードを減らせるので、ほとんどやらなくてもよい
    * 変更されやすい部分はがんばらない
